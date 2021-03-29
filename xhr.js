@@ -42,4 +42,7 @@ element.click()
 document.body.removeChild(element)
 console.log('Done!')
 */
-test = 123
+
+function scrap() {
+  alert( 'Всем привет!' );
+}
