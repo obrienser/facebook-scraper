@@ -1,32 +1,25 @@
-// This script parses users who liked the post on Facebook
-users = []
-
-// NONE, LIKE, LOVE, SUPPORT, SORRY, ANGER, WOW, HAHA
-/*reactionType = 'NONE'
-doc_id = '3528946720499433'
-fb_dtsg = 'AQHX80F7JTXC%3AAQHfUN5vcW56'
-feedbackTargetID = 'ZmVlZGJhY2s6MzM1ODE2MDk3MDk0ODI1NA'
+form_data = 'av=100004274496708&__user=100004274496708&__a=1&__dyn=7AzHJ16U9ob8ng9odoyGxu4VuC0BVU98nwgU29zEdE98K2aew9G2Saxa1Az8bo6u3y4o2Gwfi0LVEtwMw65xOfwwwto88427Uy11xmfz83WwgEcHzoaEaoG0Boy1PwBgK7qxS18wc61axe3e9xy48aU8od8-UqwsUkxe2GewGwkUtxGm2SUnxq5olwUwHxm4-5pUfEe8722u8wywLwcCm3-&__csr=gecdhfkH4Nc9Myz8DfbOO-B9tPZ9T5OPiEAhnRsLJZO49GGQnF3pnO9-GFfmGpRriiYDAqqQuJWgCLiiCgzjl5Cmu_FpLWx1BQ9iVrBVFdBmBozKGjORi-Q4kmt5A8iqEgUCaRyFpmhKUjDGeDgOp16GKiUJ2USbCGdyEa8CAmmt7Gu8z8hVeh3KWxii8Ay9ry4by8akp4VAE-8h8CFVe4Qu694EW8CCnAy8J5xyq9gxoLvGahp6UGm5pbix64EK6-m68xyppemVujDy9pumFEjU-EmQnxi3eF-58jyrz9pbg8EaUy8wCmdwAG7pUgxq6UCUjU8u1vUnwwDzUoK0a5w4nw5eBUG1mwhofU1W5w1He04O8ow1jy08cAze05Vj1W6G6Ay838U3xh88Ene3y1wwvR8udmb960ce1Ww8Po3Iw4qwb50tE3HDge8fpeqi4VUhDDxe6E37w5RwcwMaEck1vg840GU620d9wfq5Ue4u1Wwku5UcU1Vo5-q0gu0d7wgo1Dk&__req=2o&__beoa=0&__pc=EXP2%3Acomet_pkg&__bhv=2&dpr=1.5&__ccg=EXCELLENT&__rev=1003529260&__s=ao8wy6%3Asw5fvx%3Atgptjm&__hsi=6945045437598154093-0&__comet_req=1&fb_dtsg=AQE_is8_RXQJ%3AAQEENn-vgi0H&jazoest=22027&__spin_r=1003529260&__spin_b=trunk&__spin_t=1617019399&fb_api_caller_class=RelayModern&fb_api_req_friendly_name=CometUFIReactionsDialogTabContentRefetchQuery&variables=%7B%22count%22%3A10%2C%22cursor%22%3A%22AQHRzRBV6ATEDk9JLQmCpxea_57UvtgOe7s4HRPt1PPexMid0dt2f23AP_hNU1adUI0t5sWlTSBvuoNYsQYri_XKvA%22%2C%22feedbackTargetID%22%3A%22ZmVlZGJhY2s6ODk1NzQxNDMxMjE0MTgz%22%2C%22reactionType%22%3A%22NONE%22%2C%22scale%22%3A1.5%2C%22id%22%3A%22ZmVlZGJhY2s6ODk1NzQxNDMxMjE0MTgz%22%7D&server_timestamps=true&doc_id=3809394989181095'
 cursor = ''
-count = '500'*/
+users = []
+for (i = 0; i < 1000; i++) {
 
-while(true) {
-	//vars = '&fb_dtsg=' + fb_dtsg +'&variables=%7B%22count%22%3A' + count + '%2C%22cursor%22%3A%22' + cursor + '%22%2C%22feedbackTargetID%22%3A%22' + feedbackTargetID + '%3D%3D%22%2C%22reactionType%22%3A%22' + reactionType + '%22%2C%22scale%22%3A1%2C%22id%22%3A%22' + feedbackTargetID + '%3D%3D%22%7D' + '&doc_id=' + doc_id
+	// заменить курсор на новый если переменнная курсор не пуста
 	
-	vars = ''
 	var xhr = new XMLHttpRequest()
 	xhr.open('POST', 'https://www.facebook.com/api/graphql/', false)
 	xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded')
-	xhr.send(JSON.stringify(vars))
+	xhr.send(JSON.stringify(form_data))
 	if (xhr.status === 200) {
-		data = JSON.parse(xhr.responseText)
-		if (data['data']['node']['reactors']['page_info']['end_cursor'] == null) {
+		data = xhr.responseText
+		data_parsed = JSON.parse(data)
+		if (data_parsed['data']['node']['reactors']['page_info']['end_cursor'] == null) {
 			break
 		}
-		var edges = data['data']['node']['reactors']['edges']
+		var edges = data_parsed['data']['node']['reactors']['edges']
 		for (let i = 0; i < edges.length; i++) {
 			users.push(edges[i]['node']['profile_url'])
 		}
-		cursor = data['data']['node']['reactors']['page_info']['end_cursor']
+		cursor = data_parsed['data']['node']['reactors']['page_info']['end_cursor']
 		console.log('Working...')
 	}
 	else {
