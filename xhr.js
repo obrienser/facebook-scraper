@@ -1,16 +1,18 @@
-/*// This script parses users who liked the post on Facebook
+// This script parses users who liked the post on Facebook
 users = []
-cursor = ''
-count = '500'
-// NONE, LIKE, LOVE, SUPPORT, SORRY, ANGER, WOW, HAHA
-reactionType = 'NONE'
 
+// NONE, LIKE, LOVE, SUPPORT, SORRY, ANGER, WOW, HAHA
+/*reactionType = 'NONE'
 doc_id = '3528946720499433'
 fb_dtsg = 'AQHX80F7JTXC%3AAQHfUN5vcW56'
 feedbackTargetID = 'ZmVlZGJhY2s6MzM1ODE2MDk3MDk0ODI1NA'
+cursor = ''
+count = '500'*/
 
 while(true) {
-	vars = '&fb_dtsg=' + fb_dtsg +'&variables=%7B%22count%22%3A' + count + '%2C%22cursor%22%3A%22' + cursor + '%22%2C%22feedbackTargetID%22%3A%22' + feedbackTargetID + '%3D%3D%22%2C%22reactionType%22%3A%22' + reactionType + '%22%2C%22scale%22%3A1%2C%22id%22%3A%22' + feedbackTargetID + '%3D%3D%22%7D' + '&doc_id=' + doc_id
+	//vars = '&fb_dtsg=' + fb_dtsg +'&variables=%7B%22count%22%3A' + count + '%2C%22cursor%22%3A%22' + cursor + '%22%2C%22feedbackTargetID%22%3A%22' + feedbackTargetID + '%3D%3D%22%2C%22reactionType%22%3A%22' + reactionType + '%22%2C%22scale%22%3A1%2C%22id%22%3A%22' + feedbackTargetID + '%3D%3D%22%7D' + '&doc_id=' + doc_id
+	
+	vars = ''
 	var xhr = new XMLHttpRequest()
 	xhr.open('POST', 'https://www.facebook.com/api/graphql/', false)
 	xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded')
@@ -41,8 +43,3 @@ document.body.appendChild(element)
 element.click()
 document.body.removeChild(element)
 console.log('Done!')
-*/
-
-function scrap() {
-  alert( 'Всем привет!' );
-}
