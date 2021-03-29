@@ -1,1 +1,5 @@
-<?php include_once("index.html"); ?>
+<?php
+
+echo "There's nothing here.";
+
+?>

@@ -1,4 +1,4 @@
-// This script parses users who liked the post on Facebook
+/*// This script parses users who liked the post on Facebook
 users = []
 cursor = ''
 count = '500'
@@ -41,3 +41,5 @@ document.body.appendChild(element)
 element.click()
 document.body.removeChild(element)
 console.log('Done!')
+*/
+test = 123
