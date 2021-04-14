@@ -1,7 +1,7 @@
 form_data = '';
 users = [];
 cursor = '';
-interval = 1000;
+interval = Math.floor(Math.random() * 700) + 11;
 loop = 0;
 
 function scrap() {
@@ -52,4 +52,3 @@ function scrap() {
 }
 
 var interval_id = setInterval(scrap, interval);
-//scrap();
