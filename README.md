@@ -34,11 +34,20 @@
 ![image](https://user-images.githubusercontent.com/50111192/124274956-917ec800-db4a-11eb-97a0-63f97603e756.png)
 
 12. Проскрольте вниз и **найдите** пункт *Form Data*
-13. Нажмите на *view source*
+13. **Нажмите** на *view source*
 
 ![image](https://user-images.githubusercontent.com/50111192/124275278-f0dcd800-db4a-11eb-93df-0865a1375f45.png)
 
-14. 
+14. Выделите и **скопируйте** весь этот код
+
+![image](https://user-images.githubusercontent.com/50111192/124275382-1a95ff00-db4b-11eb-830b-3af77e427994.png)
+
+15. **Перейдите** в консоль *(вкладка Console)*
+16. **Вставьте** скопированный код в это место
+
+![image](https://user-images.githubusercontent.com/50111192/124275556-5fba3100-db4b-11eb-83e2-70cfb122ee42.png)
+
+17. 
 
 
 ## Ограничения
