@@ -1,4 +1,4 @@
-# Facebook Scraper
+# Facebook Scraper :space_invader:
 
 Этот скрипт позволяет получить список пользователей, которые оставили свою реакцию (лайк и тд) на пост в Facebook.<br>
 Все результаты сохраняются в .txt файл.
@@ -14,6 +14,5 @@
 >Максимальное кол-во пользователей: 10К.
 
 ## Требования
-* Facebook account
-* 
-
+* Аккаунт в Facebook
+* Браузер Google Chrome, Opera, FireFox
