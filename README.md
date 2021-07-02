@@ -43,11 +43,18 @@
 ![image](https://user-images.githubusercontent.com/50111192/124275382-1a95ff00-db4b-11eb-830b-3af77e427994.png)
 
 15. **Перейдите** в консоль *(вкладка Console)*
-16. **Вставьте** скопированный код в это место
+16. **Вставьте** скопированный код в это место:
 
 ![image](https://user-images.githubusercontent.com/50111192/124275556-5fba3100-db4b-11eb-83e2-70cfb122ee42.png)
 
-17. 
+![image](https://user-images.githubusercontent.com/50111192/124275673-88422b00-db4b-11eb-8858-1a82d5a1c5b3.png)
+
+
+17. **Нажмите Enter**
+
+![image](https://user-images.githubusercontent.com/50111192/124275798-b1fb5200-db4b-11eb-95e2-14f81800ea27.png)
+
+>**Готово!** Список пользователей сохранён в .txt файл.
 
 
 ## Ограничения
