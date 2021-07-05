@@ -72,6 +72,13 @@
 * Аккаунт в Facebook
 * Браузер Google Chrome, Opera, FireFox
 
+<br><br>
+<p align="center">
+  <a href="https://www.buymeacoffee.com/obrienser">
+    <img src="https://cdn.buymeacoffee.com/buttons/v2/default-yellow.png" alt="Buy Me A Coffee" width="140">
+  </a>
+</p>
+
 ------
 
 Made with :heart: and :coffee:
