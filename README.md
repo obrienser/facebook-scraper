@@ -73,4 +73,4 @@
 
 ------
 
-Made with :heart: and :coffe:
+Made with :heart: and :coffee:
