@@ -3,6 +3,7 @@ users = [];
 cursor = '';
 interval = Math.floor(Math.random() * 700) + 11;
 loop = 0;
+console.log('Подождите..');
 
 function scrap() {
 	try {
@@ -14,7 +15,7 @@ function scrap() {
 		}
 
 		loop += 1;
-		console.log('Working..');
+		console.log('...');
 		//console.log(cursor);
 		var xhr = new XMLHttpRequest();
 		xhr.open('POST', 'https://www.facebook.com/api/graphql/', false);
@@ -34,7 +35,7 @@ function scrap() {
 				element.click();
 				document.body.removeChild(element);
 				clearInterval(interval_id);
-				console.log('ГОТОВО!');
+				console.log('Данные загружены успешно!');
 			} else {
 				var edges = data_parsed['data']['node']['reactors']['edges'];
 				for (let i = 0; i < edges.length; i++) {
@@ -44,7 +45,17 @@ function scrap() {
 			}
 		}
 		else {
-			console.log('Error! Status = ' + xhr.status);
+			console.log('Возникла ошибка: ' + xhr.status);
+			result = users.join("\n");
+				var element = document.createElement('a');
+				element.setAttribute('href', 'data:text/plain;charset=utf-8,' + encodeURIComponent(result));
+				element.setAttribute('download', 'usersFromFacebook.txt');
+				element.style.display = 'none';
+				document.body.appendChild(element);
+				element.click();
+				document.body.removeChild(element);
+				clearInterval(interval_id);
+				console.log('Часть данных загружено успешно.');
 		}
 	} catch {
 		console.log(e);
