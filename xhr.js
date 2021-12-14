@@ -1,7 +1,7 @@
 form_data = '';
 users = [];
 cursor = '';
-interval = Math.floor(Math.random() * 700) + 11;
+interval = Math.floor(Math.random() * 800) + 21;
 loop = 0;
 console.log('Подождите..');
 
@@ -11,7 +11,6 @@ function scrap() {
 			var splits = form_data.split('22cursor%22%3A%22', 2);
 			var splits2 = splits[1].split('%22%2C%22feedbackTargetID', 2);
 			form_data = splits[0] + '22cursor%22%3A%22' + cursor + '%22%2C%22feedbackTargetID' + splits2[1];
-			//console.log(form_data);
 		}
 
 		loop += 1;
@@ -25,7 +24,7 @@ function scrap() {
 			data = xhr.responseText;
 			data_parsed = JSON.parse(data);
 			// Если пользователей больше нет (конец списка)
-			if (data_parsed['data']['node']['reactors']['page_info']['end_cursor'] == null || loop >1000) {
+			if (data_parsed['data']['node']['reactors']['page_info']['end_cursor'] == null || loop >999) {
 				result = users.join("\n");
 				var element = document.createElement('a');
 				element.setAttribute('href', 'data:text/plain;charset=utf-8,' + encodeURIComponent(result));
@@ -35,6 +34,8 @@ function scrap() {
 				element.click();
 				document.body.removeChild(element);
 				clearInterval(interval_id);
+				users = [];
+				result = null;
 				console.log('Данные загружены успешно!');
 			} else {
 				var edges = data_parsed['data']['node']['reactors']['edges'];
@@ -47,18 +48,31 @@ function scrap() {
 		else {
 			console.log('Возникла ошибка: ' + xhr.status);
 			result = users.join("\n");
-				var element = document.createElement('a');
-				element.setAttribute('href', 'data:text/plain;charset=utf-8,' + encodeURIComponent(result));
-				element.setAttribute('download', 'usersFromFacebook.txt');
-				element.style.display = 'none';
-				document.body.appendChild(element);
-				element.click();
-				document.body.removeChild(element);
-				clearInterval(interval_id);
-				console.log('Часть данных загружено успешно.');
+			var element = document.createElement('a');
+			element.setAttribute('href', 'data:text/plain;charset=utf-8,' + encodeURIComponent(result));
+			element.setAttribute('download', 'usersFromFacebook.txt');
+			element.style.display = 'none';
+			document.body.appendChild(element);
+			element.click();
+			document.body.removeChild(element);
+			clearInterval(interval_id);
+			users = [];
+			result = null;
+			console.log('Часть данных загружено успешно.');
 		}
 	} catch {
-		console.log(e);
+		console.log('Возникла ошибка: ' + e);
+		result = users.join("\n");
+		var element = document.createElement('a');
+		element.setAttribute('href', 'data:text/plain;charset=utf-8,' + encodeURIComponent(result));
+		element.setAttribute('download', 'usersFromFacebook.txt');
+		element.style.display = 'none';
+		document.body.appendChild(element);
+		element.click();
+		document.body.removeChild(element);
+		users = [];
+		result = null;
+		console.log('Часть данных загружено успешно.');
 	}
 }
 
