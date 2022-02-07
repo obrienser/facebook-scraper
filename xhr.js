@@ -61,7 +61,7 @@ function scrap() {
 			console.log('Часть данных загружено успешно.');
 		}
 	} catch {
-		console.log('Возникла ошибка: ' + e);
+		console.log('Возникла ошибка: ');
 		result = users.join("\n");
 		var element = document.createElement('a');
 		element.setAttribute('href', 'data:text/plain;charset=utf-8,' + encodeURIComponent(result));
