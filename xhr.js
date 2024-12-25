@@ -1,79 +1,194 @@
-form_data = '';
-users = [];
-cursor = '';
-interval = Math.floor(Math.random() * 800) + 21;
-loop = 0;
-console.log('Подождите..');
+// Инициализация глобальных переменных
+// Предполагается, что переменные fb_dtsg и interval_id уже определены глобально
 
-function scrap() {
-	try {
-		if (loop > 0) {
-			var splits = form_data.split('22cursor%22%3A%22', 2);
-			var splits2 = splits[1].split('%22%2C%22feedbackTargetID', 2);
-			form_data = splits[0] + '22cursor%22%3A%22' + cursor + '%22%2C%22feedbackTargetID' + splits2[1];
-		}
+// Массив для хранения собранных ссылок на профили
+let users = [];
 
-		loop += 1;
-		console.log('...');
-		//console.log(cursor);
-		var xhr = new XMLHttpRequest();
-		xhr.open('POST', 'https://www.facebook.com/api/graphql/', false);
-		xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
-		xhr.send(JSON.stringify(form_data));
-		if (xhr.status === 200) {
-			data = xhr.responseText;
-			data_parsed = JSON.parse(data);
-			// Если пользователей больше нет (конец списка)
-			if (data_parsed['data']['node']['reactors']['page_info']['end_cursor'] == null || loop >999) {
-				result = users.join("\n");
-				var element = document.createElement('a');
-				element.setAttribute('href', 'data:text/plain;charset=utf-8,' + encodeURIComponent(result));
-				element.setAttribute('download', 'usersFromFacebook.txt');
-				element.style.display = 'none';
-				document.body.appendChild(element);
-				element.click();
-				document.body.removeChild(element);
-				clearInterval(interval_id);
-				users = [];
-				result = null;
-				console.log('Данные загружены успешно!');
-			} else {
-				var edges = data_parsed['data']['node']['reactors']['edges'];
-				for (let i = 0; i < edges.length; i++) {
-					users.push(edges[i]['node']['profile_url']);
-				}
-				cursor = data_parsed['data']['node']['reactors']['page_info']['end_cursor'];
-			}
-		}
-		else {
-			console.log('Возникла ошибка: ' + xhr.status);
-			result = users.join("\n");
-			var element = document.createElement('a');
-			element.setAttribute('href', 'data:text/plain;charset=utf-8,' + encodeURIComponent(result));
-			element.setAttribute('download', 'usersFromFacebook.txt');
-			element.style.display = 'none';
-			document.body.appendChild(element);
-			element.click();
-			document.body.removeChild(element);
-			clearInterval(interval_id);
-			users = [];
-			result = null;
-			console.log('Часть данных загружено успешно.');
-		}
-	} catch {
-		console.log('Возникла ошибка: ');
-		result = users.join("\n");
-		var element = document.createElement('a');
-		element.setAttribute('href', 'data:text/plain;charset=utf-8,' + encodeURIComponent(result));
-		element.setAttribute('download', 'usersFromFacebook.txt');
-		element.style.display = 'none';
-		document.body.appendChild(element);
-		element.click();
-		document.body.removeChild(element);
-		users = [];
-		result = null;
-		console.log('Часть данных загружено успешно.');
-	}
+// Текущий курсор для пагинации
+let cursor = '';
+
+// Счётчик итераций
+let loop = 0;
+
+// Максимальное количество итераций, чтобы избежать зацикливания
+const maxLoops = 999;
+
+// Количество пользователей на одну итерацию
+const count = 10;
+
+// ID поста, реакции на который вы скрапите
+const feedbackTargetID = 'ВАШ_FEEDBACK_TARGET_ID'; // Замените на реальный ID поста
+
+// Тип реакции (может быть null, если не требуется)
+const reactionID = null; // Или укажите нужный тип реакции
+
+// Масштаб изображения профиля
+const scale = 2;
+
+// Проверка существования глобальной переменной fb_dtsg
+if (typeof fb_dtsg === 'undefined' || !fb_dtsg) {
+    console.error('fb_dtsg не найден. Проверьте наличие токена на странице.');
+} else {
+    console.log('fb_dtsg найден:', fb_dtsg);
 }
 
-var interval_id = setInterval(scrap, interval);
+// Функция для формирования form_data
+function buildFormData(cursor) {
+    const variables = {
+        count: count,
+        cursor: cursor,
+        feedbackTargetID: feedbackTargetID,
+        reactionID: reactionID,
+        scale: scale,
+        id: feedbackTargetID
+    };
+
+    const formData = new URLSearchParams();
+    
+    // Заполните следующие поля соответствующими значениями
+    formData.append('av', 'ВАШ_USER_ID'); // Замените на ваш user ID
+    formData.append('__aaid', 'ВАШ_ЗНАЧЕНИЕ'); // Замените на соответствующее значение
+    formData.append('__user', 'ВАШ_USER_ID'); // Замените на ваш user ID
+    formData.append('__a', 'ВАШ_ЗНАЧЕНИЕ'); // Замените на соответствующее значение
+    formData.append('__req', 'ВАШ_ЗНАЧЕНИЕ'); // Замените на соответствующее значение
+    formData.append('__hs', 'ВАШ_ЗНАЧЕНИЕ'); // Замените на соответствующее значение
+    formData.append('dpr', 'ВАШ_ЗНАЧЕНИЕ'); // Замените на соответствующее значение
+    formData.append('__ccg', 'ВАШ_ЗНАЧЕНИЕ'); // Замените на соответствующее значение
+    formData.append('__rev', 'ВАШ_ЗНАЧЕНИЕ'); // Замените на соответствующее значение
+    formData.append('__s', 'ВАШ_ЗНАЧЕНИЕ'); // Замените на соответствующее значение
+    formData.append('__hsi', 'ВАШ_ЗНАЧЕНИЕ'); // Замените на соответствующее значение
+    formData.append('__dyn', 'ВАШ_ЗНАЧЕНИЕ'); // Замените на соответствующее значение
+    formData.append('__csr', 'ВАШ_ЗНАЧЕНИЕ'); // Замените на соответствующее значение
+    formData.append('__comet_req', 'ВАШ_ЗНАЧЕНИЕ'); // Замените на соответствующее значение
+
+    // Используем глобальный fb_dtsg
+    formData.append('fb_dtsg', fb_dtsg); // Убедитесь, что fb_dtsg доступен глобально
+    formData.append('jazoest', 'ВАШ_ЗНАЧЕНИЕ'); // Замените на соответствующее значение
+    formData.append('lsd', 'ВАШ_ЗНАЧЕНИЕ'); // Замените на соответствующее значение
+    formData.append('__spin_r', 'ВАШ_ЗНАЧЕНИЕ'); // Замените на соответствующее значение
+    formData.append('__spin_b', 'ВАШ_ЗНАЧЕНИЕ'); // Замените на соответствующее значение
+    formData.append('__spin_t', 'ВАШ_ЗНАЧЕНИЕ'); // Замените на соответствующее значение
+    formData.append('fb_api_caller_class', 'RelayModern'); // Обычно фиксированное значение
+    formData.append('fb_api_req_friendly_name', 'CometUFIReactionsDialogTabContentRefetchQuery'); // Обычно фиксированное значение
+    formData.append('variables', JSON.stringify(variables));
+    formData.append('server_timestamps', 'true');
+    formData.append('doc_id', '9069004929826853'); // Проверьте, актуален ли doc_id
+
+    return formData.toString();
+}
+
+// Функция для отправки запроса
+function sendRequest(formData) {
+    return new Promise((resolve, reject) => {
+        const xhr = new XMLHttpRequest();
+        xhr.open('POST', 'https://www.facebook.com/api/graphql/', true); // Асинхронный запрос
+
+        // Установка необходимых заголовков
+        xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
+        xhr.setRequestHeader('Accept', '*/*');
+        xhr.setRequestHeader('X-ASBD-ID', '129477'); // Обычно фиксированное значение
+        xhr.setRequestHeader('X-FB-Friendly-Name', 'CometUFIReactionsDialogTabContentRefetchQuery'); // Обычно фиксированное значение
+
+        // Установка заголовка X-FB-LSD, если fb_dtsg содержит LSD
+        const lsdMatch = fb_dtsg.match(/^[^:]+/);
+        if (lsdMatch) {
+            xhr.setRequestHeader('X-FB-LSD', lsdMatch[0]);
+        } else {
+            console.warn('Не удалось извлечь X-FB-LSD из fb_dtsg');
+        }
+
+        // Обработчик ответа
+        xhr.onload = () => {
+            if (xhr.status === 200) {
+                resolve(xhr.responseText);
+            } else {
+                reject(`Ошибка ответа сервера: ${xhr.status}`);
+            }
+        };
+
+        xhr.onerror = () => {
+            reject('Ошибка сети.');
+        };
+
+        // Отправка запроса
+        xhr.send(formData);
+    });
+}
+
+// Функция для обработки и парсинга ответа
+function parseResponse(responseText) {
+    try {
+        const data_parsed = JSON.parse(responseText);
+        const edges = data_parsed.data.node.reactors.edges;
+        const pageInfo = data_parsed.data.node.reactors.page_info;
+
+        // Извлечение профилей
+        edges.forEach(edge => {
+            if (edge.node.profile_url) {
+                users.push(edge.node.profile_url);
+            }
+        });
+
+        // Обновление курсора
+        cursor = pageInfo.end_cursor;
+
+        return pageInfo.has_next_page;
+    } catch (error) {
+        throw new Error('Ошибка при парсинге ответа: ' + error.message);
+    }
+}
+
+// Функция для скачивания результатов
+function downloadResults() {
+    const result = users.join("\n");
+    const element = document.createElement('a');
+    element.setAttribute('href', 'data:text/plain;charset=utf-8,' + encodeURIComponent(result));
+    element.setAttribute('download', 'usersFromFacebook.txt');
+    element.style.display = 'none';
+    document.body.appendChild(element);
+    element.click();
+    document.body.removeChild(element);
+    users = [];
+}
+
+// Основная функция скрапинга
+async function scrap() {
+    try {
+        loop += 1;
+        console.log(`Итерация: ${loop}`);
+
+        // Построение form_data
+        const form_data = buildFormData(cursor);
+
+        console.log('Отправка запроса...');
+        const response = await sendRequest(form_data);
+        console.log('Ответ получен. Парсинг данных...');
+
+        const hasNextPage = parseResponse(response);
+        console.log(`Найдено пользователей: ${users.length}`);
+
+        if (!hasNextPage || loop >= maxLoops) {
+            console.log('Конец списка или превышен лимит итераций.');
+            downloadResults();
+            clearInterval(interval_id); // Используем глобальную переменную interval_id
+            console.log('Данные загружены успешно!');
+        } else {
+            console.log(`Продолжаем скрапинг. Новый курсор: ${cursor}`);
+        }
+    } catch (error) {
+        console.error('Произошла ошибка:', error);
+        downloadResults();
+        clearInterval(interval_id); // Используем глобальную переменную interval_id
+        console.error('Цикл завершен из-за ошибки.');
+    }
+}
+
+// Функция для установки интервала с динамическим временем ожидания
+function startScraping() {
+    const interval = Math.floor(Math.random() * 800) + 21; // Время в миллисекундах
+    interval_id = setInterval(scrap, interval); // Используем глобальную переменную interval_id
+    console.log('Скрапинг начат...');
+}
+
+// Запуск скрапинга
+startScraping();
